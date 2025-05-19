@@ -22,6 +22,8 @@
 #include <rcl/init_options.h>
 #include <rcutils/logging_macros.h>
 
+#include "esp_log.h"
+
 rcl_ret_t
 rclc_support_init(
   rclc_support_t * support,
@@ -29,6 +31,10 @@ rclc_support_init(
   char const * const * argv,
   rcl_allocator_t * allocator)
 {
+  // HIERO LOGGING---------------
+  ESP_LOGI("RCLCPY","RCLC INIT REACHED");
+  // ----------------------------
+
   RCL_CHECK_FOR_NULL_WITH_MSG(
     support, "support is a null pointer", return RCL_RET_INVALID_ARGUMENT);
   RCL_CHECK_FOR_NULL_WITH_MSG(
