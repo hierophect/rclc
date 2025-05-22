@@ -32,7 +32,7 @@ rclc_support_init(
   rcl_allocator_t * allocator)
 {
   // HIERO LOGGING---------------
-  ESP_LOGI("RCLCPY","RCLC INIT REACHED");
+  ESP_LOGW("RCLCPY","RCLC init reached");
   // ----------------------------
 
   RCL_CHECK_FOR_NULL_WITH_MSG(
@@ -44,12 +44,16 @@ rclc_support_init(
   rcl_init_options_t init_options = rcl_get_zero_initialized_init_options();
   rc = rcl_init_options_init(&init_options, (*allocator) );
   if (rc != RCL_RET_OK) {
+
+    ESP_LOGW("RCLCPY","RCLC options init error");
+
     PRINT_RCLC_ERROR(rclc_support_init, rcl_init_options_init);
     return rc;
   }
 
   rc = rclc_support_init_with_options(support, argc, argv, &init_options, allocator);
   if (rcl_init_options_fini(&init_options) != RCL_RET_OK) {
+    ESP_LOGW("RCLCPY", "RCLC support init with options failure");
     PRINT_RCLC_ERROR(rclc_support_init, rcl_init_options_fini);
   }
 
@@ -75,6 +79,7 @@ rclc_support_init_with_options(
   support->context = rcl_get_zero_initialized_context();
   rc = rcl_init(argc, argv, init_options, &support->context);
   if (rc != RCL_RET_OK) {
+    ESP_LOGW("RCLCPY", "RCLC rcl_init failure");
     PRINT_RCLC_ERROR(rclc_init, rcl_init);
     return rc;
   }
@@ -82,6 +87,7 @@ rclc_support_init_with_options(
 
   rc = rcl_clock_init(RCL_STEADY_TIME, &support->clock, support->allocator);
   if (rc != RCL_RET_OK) {
+    ESP_LOGW("RCLCPY", "RCLC clock failure");
     PRINT_RCLC_ERROR(rclc_init, rcl_clock_init);
   }
   return rc;
